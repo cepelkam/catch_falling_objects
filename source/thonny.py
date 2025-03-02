@@ -9,19 +9,22 @@ pygame.display.set_caption("Catch Falling Objects")
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-DARK_GRAY = (50, 50, 50)
-YELLOW = (255, 255, 0)
-GREEN = (0, 255, 0)
 
 font = pygame.font.SysFont(None, 36)
 
 # Načtení obrázků
 basket_image = pygame.image.load("basket.png")
-apple_image = pygame.image.load("apple.png")  # Jablko pro červený objekt
+apple_image = pygame.image.load("apple.png")
+pineapple_image = pygame.image.load("pineapple.png")
+rotten_pineapple_image = pygame.image.load("rotten_pineapple.png")
+green_apple_image = pygame.image.load("green_apple.png")  # Zelené jablko (green)
 
-# Úprava velikosti obrázků podle potřeby
-object_size = (30, 30)  # Nastav velikost objektů
+# Úprava velikosti obrázků
+object_size = (30, 30)
 apple_image = pygame.transform.scale(apple_image, object_size)
+pineapple_image = pygame.transform.scale(pineapple_image, object_size)
+rotten_pineapple_image = pygame.transform.scale(rotten_pineapple_image, object_size)
+green_apple_image = pygame.transform.scale(green_apple_image, object_size)
 
 basket_width = basket_image.get_width()
 basket_height = basket_image.get_height()
@@ -34,11 +37,11 @@ def game_loop():
     falling_objects = []
 
     object_types = [
-        {"image": apple_image, "effect": "normal", "points": 1, "chance": 1.0},  # Jablko místo červeného objektu
-        {"color": DARK_GRAY, "effect": "bomb", "points": 0, "chance": 0.3},
-        {"color": YELLOW, "effect": "bonus", "points": 2, "chance": 0.1},
-        {"color": GREEN, "effect": "double", "points": 0, "chance": 0.01},
-        {"color": WHITE, "effect": "speed_boost", "points": 0, "chance": 0.05}
+        {"image": apple_image, "effect": "normal", "points": 1, "chance": 1.0},        # Červené jablko
+        {"image": rotten_pineapple_image, "effect": "bomb", "points": 0, "chance": 0.3}, # Plesnivej ananas
+        {"image": pineapple_image, "effect": "bonus", "points": 2, "chance": 0.1},     # Žlutý ananas
+        {"image": green_apple_image, "effect": "double", "points": 0, "chance": 0.01}, # Zelené jablko (double)
+        {"color": WHITE, "effect": "speed_boost", "points": 0, "chance": 0.05}         # Speed boost zůstává bílý
     ]
 
     score = 0
@@ -74,8 +77,8 @@ def game_loop():
                 "x": random.randint(0, WIDTH - object_size[0]),
                 "y": random.randint(-100, -50),
                 "speed": random.uniform(*normal_speed_range) if not speed_boost_active else random.uniform(*boosted_speed_range),
-                "image": obj_type.get("image"),  # Pokud existuje obrázek, použij ho
-                "color": obj_type.get("color", WHITE),  # Jinak použij barvu
+                "image": obj_type.get("image"),
+                "color": obj_type.get("color", WHITE),
                 "effect": obj_type["effect"],
                 "points": obj_type["points"]
             })
@@ -89,8 +92,7 @@ def game_loop():
 
         for obj in falling_objects[:]:
             obj["y"] += obj["speed"]
-            
-            # Pokud má objekt obrázek, vykresli ho, jinak nakresli obdélník
+
             if obj["image"]:
                 screen.blit(obj["image"], (obj["x"], obj["y"]))
             else:
@@ -107,7 +109,7 @@ def game_loop():
                         return
                 elif obj["effect"] == "speed_boost":
                     speed_boost_active = True
-                    speed_boost_timer = 600  # 10 sekund (60 FPS * 10)
+                    speed_boost_timer = 600
                     for existing_obj in falling_objects:
                         existing_obj["speed"] = random.uniform(*boosted_speed_range)
                 falling_objects.remove(obj)
