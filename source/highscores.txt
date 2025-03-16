@@ -1,6 +1,6 @@
 Jméno: Skóre
+l: 89
 arinek: 24
 pl: 17
 ko: 14
-j: 1
-pl: 1
+kk: 13

@@ -4,7 +4,7 @@ import os
 
 pygame.init()
 
-WIDTH, HEIGHT = 1100, 900
+WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Chytání padajících objektů")
 
@@ -23,7 +23,7 @@ pineapple_image = pygame.image.load("pineapple.png")
 rotten_pineapple_image = pygame.image.load("rotten_pineapple.png")
 green_apple_image = pygame.image.load("green_apple.png")
 
-object_size = (30, 30)
+object_size = (50, 50)
 apple_image = pygame.transform.scale(apple_image, object_size)
 pineapple_image = pygame.transform.scale(pineapple_image, object_size)
 rotten_pineapple_image = pygame.transform.scale(rotten_pineapple_image, object_size)
